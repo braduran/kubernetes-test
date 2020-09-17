@@ -1,36 +1,36 @@
-# Paso a paso para ejecutar kubernetes local
+### Paso a paso para ejecutar kubernetes local
 
-## Crear imagen con Dockerfile
-docker build  -t "carga-test" .
+1. Crear imagen con Dockerfile
+```docker build  -t "carga-test" . ```
 
-## Inicia minikube
-minikube start
+2. Inicia minikube
+```minikube start```
 
-## Ejecutar docker local en minikube
-eval $(minikube docker-env) 
+3. Ejecutar docker local en minikube
+```eval $(minikube docker-env) ```
 
-## Exponer host con el que se consumira el servicio
-export INGRESS_HOST=$(minikube ip) 
+4. Exponer host con el que se consumira el servicio
+```export INGRESS_HOST=$(minikube ip)``` 
 
-## Exponer puerto con el que se consumira el servicio
-export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}') 
+5. Exponer puerto con el que se consumira el servicio
+```export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}') ```
 
-## Url del gateway host y puerto
-export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT 
+6. Url del gateway host y puerto
+```export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT ```
 
-## Habilitar metrics-server
-minikube addons enable metrics-server
+7. Habilitar metrics-server
+``` minikube addons enable metrics-server ```
 
-## Crear namespace
-kubectl create namespace <namespace name>
+8. Crear namespace
+```kubectl create namespace <namespace name>```
 
-## Ejecutar app.yaml
-kubectl apply -f app.yaml
+9. Ejecutar app.yaml
+```kubectl apply -f app.yaml```
 
-## Ejecutar gateway.yaml
-kubectl apply -f gateway.yaml
+10. Ejecutar gateway.yaml
+```kubectl apply -f gateway.yaml```
 
-# Bonus
+### Bonus
 
-## Ver graficamente toda la información del cluster
-minikube dashboard
+* Ver graficamente toda la información del cluster
+```minikube dashboard```
