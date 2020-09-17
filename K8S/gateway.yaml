@@ -1,0 +1,50 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: ms-carga-gateway
+  namespace: carga-namespace
+  labels:
+    app.bancolombia.com.co/env: dev
+    app.bancolombia.com.co/cost-center: pmo30825
+    app.bancolombia.com.co/application-code: nu0014001
+    app.bancolombia.com.co/project: lifecoach-capa-gestion
+    app.bancolombia.com.co/pmo: pmo30825
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "192.168.64.4"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ms-carga-vs
+  namespace: carga-namespace
+  labels:
+    app.bancolombia.com.co/env: dev
+    app.bancolombia.com.co/cost-center: pmo30825
+    app.bancolombia.com.co/application-code: nu0014001
+    app.bancolombia.com.co/project: lifecoach-capa-gestion
+    app.bancolombia.com.co/pmo: pmo30825
+spec:
+  hosts:
+  - "192.168.64.4"
+  gateways:
+  - ms-carga-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /lifecoach-capa-gestion/prueba/
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: ms-carga
+        port:
+          number: 80
+    #websocketUpgrade: true #if websockets are required

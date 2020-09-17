@@ -1,0 +1,33 @@
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = JavaVersion.VERSION_11
+
+buildscript {
+ext {
+   springBootVersion = '2.2.1.RELEASE'
+}
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	compile 'org.springframework.boot:spring-boot-starter-web:2.2.1.RELEASE'
+}
+
+jar {
+    archivesBaseName = rootProject.name
+    libsDirName = project(":").getBuildDir()
+}
+
+application {
+    mainClassName = 'carga.test.Main'
+}
